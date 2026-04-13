@@ -1,11 +1,11 @@
 package com.example.service.impl;
 
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.example.repository.MangaRawDataRepository;
-import org.example.repository.MangaRequestDataRepository;
-import org.example.repository.entity.MangaRawData;
-import org.example.repository.entity.MangaRequestData;
-import org.example.service.impl.KafkaServiceImpl;
+import com.example.repository.MangaRawDataRepository;
+import com.example.repository.MangaRequestDataRepository;
+import com.example.repository.entity.MangaRawData;
+import com.example.repository.entity.MangaRequestData;
+import com.example.service.MangaSystemCacheService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,9 +40,11 @@ class KafkaServiceTest {
     @Mock
     private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
+    @Mock
+    private MangaSystemCacheService mangaSystemCacheService;
+
     @InjectMocks
     private KafkaServiceImpl kafkaService;
-
 
     private MangaRequestData createMockMangaRequestData(Long id) {
         MangaRequestData data = new MangaRequestData();
@@ -96,6 +98,9 @@ class KafkaServiceTest {
                 "  \"worldSetting\" : null\n" +
                 "}";
 
+        String topic = "manga-topic";
+        given(mangaSystemCacheService.getKafkaParameterByCode(anyString())).willReturn(topic);
+
         MangaRequestData mockData = createMockMangaRequestData(1L);
         given(kafkaService.saveMangaRequestData(any())).willReturn(mockData);
 
@@ -147,6 +152,9 @@ class KafkaServiceTest {
                 "  \"worldSetting\" : null\n" +
                 "}";
 
+        String topic = "manga-topic";
+        given(mangaSystemCacheService.getKafkaParameterByCode(anyString())).willReturn(topic);
+
         MangaRequestData mockData = createMockMangaRequestData(1L);
         given(kafkaService.saveMangaRequestData(any())).willReturn(mockData);
 
@@ -192,6 +200,9 @@ class KafkaServiceTest {
                 "  \"volumes\" : { },\n" +
                 "  \"worldSetting\" : null\n" +
                 "}";
+
+        String topic = "manga-topic";
+        given(mangaSystemCacheService.getKafkaParameterByCode(anyString())).willReturn(topic);
 
         given(kafkaService.saveMangaRequestData(any())).willThrow(new RuntimeException("Database connection failed"));
 
@@ -493,6 +504,9 @@ class KafkaServiceTest {
                 "  \"volumes\" : { },\n" +
                 "  \"worldSetting\" : null\n" +
                 "}";
+
+        String topic = "manga-topic";
+        given(mangaSystemCacheService.getKafkaParameterByCode(anyString())).willReturn(topic);
 
         MangaRequestData mockData = createMockMangaRequestData(1L);
         given(kafkaService.saveMangaRequestData(any())).willReturn(mockData);

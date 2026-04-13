@@ -1,4 +1,4 @@
-package org.example.bean;
+package com.example.bean;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

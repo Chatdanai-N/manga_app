@@ -1,7 +1,7 @@
-package org.example.controller;
+package com.example.controller;
 
 import lombok.Generated;
-import org.example.service.KafkaService;
+import com.example.service.KafkaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

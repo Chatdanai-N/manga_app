@@ -1,9 +1,9 @@
-package org.example.controller;
+package com.example.controller;
 
 
 import lombok.Generated;
-import org.example.bean.MangaRequest;
-import org.example.service.KafkaService;
+import com.example.bean.MangaRequest;
+import com.example.service.KafkaService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;

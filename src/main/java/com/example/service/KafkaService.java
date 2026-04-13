@@ -1,6 +1,6 @@
-package org.example.service;
+package com.example.service;
 
-import org.example.repository.entity.MangaRequestData;
+import com.example.repository.entity.MangaRequestData;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
