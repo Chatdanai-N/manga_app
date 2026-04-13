@@ -1,13 +1,14 @@
-package org.example.service.impl;
+package com.example.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.example.repository.MangaRawDataRepository;
-import org.example.repository.MangaRequestDataRepository;
-import org.example.repository.entity.MangaRawData;
-import org.example.repository.entity.MangaRequestData;
-import org.example.service.KafkaService;
-import org.example.utils.DateUtils;
+import com.example.repository.MangaRawDataRepository;
+import com.example.repository.MangaRequestDataRepository;
+import com.example.repository.entity.MangaRawData;
+import com.example.repository.entity.MangaRequestData;
+import com.example.service.KafkaService;
+import com.example.service.MangaSystemCacheService;
+import com.example.utils.DateUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,7 +17,6 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,8 +25,9 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Service
+
 @Slf4j
+@Service
 public class KafkaServiceImpl implements KafkaService {
 
 
@@ -34,19 +35,21 @@ public class KafkaServiceImpl implements KafkaService {
     private final MangaRawDataRepository mangaRawDataRepository;
     private final MangaRequestDataRepository mangaRequestDataRepository;
     private final KafkaListenerEndpointRegistry registry;
+    private final MangaSystemCacheService mangaSystemCacheService;
 
-    public KafkaServiceImpl(KafkaTemplate<String, String> kafkaTemplate, MangaRawDataRepository mangaRawDataRepository, MangaRequestDataRepository mangaRequestDataRepository, KafkaListenerEndpointRegistry registry) {
+
+    public KafkaServiceImpl(KafkaTemplate<String, String> kafkaTemplate, MangaRawDataRepository mangaRawDataRepository, MangaRequestDataRepository mangaRequestDataRepository, KafkaListenerEndpointRegistry registry, MangaSystemCacheService mangaSystemCacheService) {
         this.kafkaTemplate = kafkaTemplate;
         this.mangaRawDataRepository = mangaRawDataRepository;
         this.mangaRequestDataRepository = mangaRequestDataRepository;
         this.registry = registry;
+        this.mangaSystemCacheService = mangaSystemCacheService;
     }
-
 
     @Override
     public void produceMessage(String key, String jsonPayload) {
         try {
-            String topic = "push.manga";
+            String topic = mangaSystemCacheService.getKafkaParameterByCode("TOPIC_NAME");
 
             // insert manga request
             MangaRequestData mangaRequestData = new MangaRequestData();
@@ -77,7 +80,7 @@ public class KafkaServiceImpl implements KafkaService {
 
 
     @Override
-    @KafkaListener(topics = "${spring.kafka.topic.name}", id = "manga-listener-id", autoStartup = "true")
+    @KafkaListener( topics = "${spring.kafka.topic.name}", id = "manga-listener-id", autoStartup = "true")
     @Transactional
     public void consumeMessage(@Payload String payload, @Header(KafkaHeaders.RECEIVED_TOPIC) String topicName,
                                @Header(KafkaHeaders.RECEIVED_KEY) String key,

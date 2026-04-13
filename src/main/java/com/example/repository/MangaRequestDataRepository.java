@@ -1,7 +1,7 @@
-package org.example.repository;
+package com.example.repository;
 
 import jakarta.transaction.Transactional;
-import org.example.repository.entity.MangaRequestData;
+import com.example.repository.entity.MangaRequestData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

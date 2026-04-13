@@ -1,4 +1,4 @@
-package org.example.config;
+package com.example.config;
 
 
 import lombok.Generated;
