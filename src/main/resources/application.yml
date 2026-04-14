@@ -45,8 +45,20 @@ spring:
       concurrency: 3
       missing-topics-fatal: false
       auto-startup: true
-
 logging:
   level:
     org.springframework.kafka: INFO
     org.apache.kafka: INFO
+server:
+  port: 9090
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    # เรียงลำดับ API ตาม HTTP Method (GET, POST, ...)
+    operations-sorter: method
+    # ช่วยให้หน้า UI จดจำ Token ที่กรอกไว้ได้แม้จะ Refresh หน้าจอ
+    persist-authorization: true
+  # แสดงผลการ Validate (เช่น @NotNull, @Size) ใน Document อัตโนมัติ
+  show-login-endpoint: true
