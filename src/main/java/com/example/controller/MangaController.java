@@ -28,7 +28,7 @@ public class MangaController {
 
         kafkaService.produceMessage(mangaId,jsonPayload);
 
-        return "Started";
+        return "Success";
     }
 
     @PostMapping("/resend")
